@@ -1,7 +1,8 @@
+import { Children } from 'react';
 import type { ViewProps, ViewStyle } from 'react-native';
 import { View } from 'react-native';
 
-export type FlexProps = ViewProps &
+export interface FlexProps extends ViewProps,
   Pick<
     ViewStyle,
     | 'alignItems'
@@ -12,18 +13,24 @@ export type FlexProps = ViewProps &
     | 'flexShrink'
     | 'flexWrap'
     | 'justifyContent'
-  >;
+  > {
+  flexGap?: number
+}
 
 export function Flex({
+  children,
   flex,
   flexBasis,
   flexDirection,
+  flexGap,
   flexGrow,
   flexShrink,
   flexWrap,
   style,
   ...rest
 }: FlexProps) {
+  const marginProperty = flexDirection === 'row' ? 'marginEnd' : 'marginTop' as const;
+
   return (
     <View
       {...rest}
@@ -38,7 +45,15 @@ export function Flex({
         },
         style,
       ]}
-    />
+    >
+      {flexGap == null ? (
+        children
+      ) : Children.map(children, (child, index) => (
+        <View style={{ [marginProperty]: index === Children.count(children) - 1 ? 0 : flexGap }}>
+          {child}
+        </View>
+      ))}
+    </View>
   );
 }
 
