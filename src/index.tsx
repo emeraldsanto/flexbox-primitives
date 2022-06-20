@@ -29,6 +29,8 @@ export function Flex({
   style,
   ...rest
 }: FlexProps) {
+  const marginProperty = flexDirection === 'row' ? 'marginEnd' : 'marginTop' as const;
+
   return (
     <View
       {...rest}
@@ -47,7 +49,7 @@ export function Flex({
       {flexGap == null ? (
         children
       ) : Children.map(children, (child, index) => (
-        <View style={{ marginBottom: index === Children.count(children) - 1 ? 0 : flexGap }}>
+        <View style={{ [marginProperty]: index === Children.count(children) - 1 ? 0 : flexGap }}>
           {child}
         </View>
       ))}
