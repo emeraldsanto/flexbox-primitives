@@ -48,12 +48,18 @@ export function Flex({
     >
       {flexGap == null ? (
         children
-      ) : Children.map(children, (child, index) => (
+      ) : Children.toArray(children).map((child, index, array) => (
         <>
           {child}
 
-          {index !== Children.count(children) - 1 && (
-            <View accessibilityElementsHidden accessibilityLiveRegion='none' accessible={false} importantForAccessibility='no' style={{ [sizeProperty]: flexGap }} />
+          {index !== array.length - 1 && (
+            <View
+              accessibilityElementsHidden
+              accessibilityLiveRegion='none'
+              accessible={false}
+              importantForAccessibility='no'
+              style={{ [sizeProperty]: flexGap }}
+            />
           )}
         </>
       ))}
